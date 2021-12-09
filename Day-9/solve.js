@@ -26,13 +26,12 @@ const wasVisited = (x, y, visited) => visited.some( pos => pos.x === x && pos.y 
 const flowfill = (x, y, visited) => {
   let basin = 0;
 
-  if (grid[x][y] < 9 && !wasVisited(x, y, visited) ) {
+  if ((0 <= x && x < grid.length) && (0 <= y && y < grid[0].length)
+     && (grid[x][y] < 9) && !wasVisited(x, y, visited)) {
+
     visited.push({x: x, y: y});
-    basin = 1
-          + (x-1 >= 0             ? flowfill(x-1, y, visited) : 0)
-          + (y-1 >= 0             ? flowfill(x, y-1, visited) : 0)
-          + (x+1 < grid.length    ? flowfill(x+1, y, visited) : 0)
-          + (y+1 < grid[0].length ? flowfill(x, y+1, visited) : 0);
+    basin = 1 + flowfill(x-1, y, visited) + flowfill(x, y-1, visited)
+              + flowfill(x+1, y, visited) + flowfill(x, y+1, visited);
   }
 
   return basin;
